@@ -1,8 +1,11 @@
+import os
+import shutil
 from pathlib import Path
 
 from chestCancerClassifier.constants import CONFIG_FILE_PATH, PARAMS_FILE_PATH
 from chestCancerClassifier.entity.config_entity import (DataIngestionConfig,
-                                                        PrepareBaseModelConfig)
+                                                        PrepareBaseModelConfig,
+                                                        TrainingConfig)
 from chestCancerClassifier.utils.common import create_directories, read_yaml
 
 
@@ -48,3 +51,72 @@ class ConfigurationManager:
         )
 
         return prepare_base_model_config
+
+    def copy_relevant_classes(self, src_dir, dest_dir, classes):
+        """
+        Copy only the relevant classes from the source directory to the
+                                                    destination directory.
+
+        Parameters:
+        src_dir (str): Source directory containing the full dataset.
+        dest_dir (str): Destination directory to contain only the relevant
+                                                                    classes.
+        classes (list): List of class names to be copied.
+        """
+        if not os.path.exists(dest_dir):
+            os.makedirs(dest_dir)
+
+        for class_name in classes:
+            src_class_dir = os.path.join(src_dir, class_name)
+            dest_class_dir = os.path.join(dest_dir, class_name)
+
+            if not os.path.exists(dest_class_dir):
+                os.makedirs(dest_class_dir)
+
+            # Copy all files from the source class directory to the destination
+            # class directory
+            for filename in os.listdir(src_class_dir):
+                src_file = os.path.join(src_class_dir, filename)
+                dest_file = os.path.join(dest_class_dir, filename)
+                shutil.copyfile(src_file, dest_file)
+
+    def get_training_config(self) -> TrainingConfig:
+        training = self.config.training
+        prepare_base_model = self.config.prepare_base_model
+        params = self.params
+
+        # Define source and destination directories
+        src_dir = os.path.join(
+            self.config.data_ingestion.unzip_dir, "Data", "test"
+        )
+        dest_dir = os.path.join(
+            self.config.data_ingestion.unzip_dir, "Data", "new"
+        )
+
+        # List of relevant classes
+        relevant_classes = ['adenocarcinoma', 'normal']
+
+        # Copy relevant classes
+        self.copy_relevant_classes(src_dir, dest_dir, relevant_classes)
+
+        print("Relevant classes copied successfully!")
+
+        training_data = dest_dir
+        create_directories([
+            Path(training.root_dir)
+        ])
+
+        training_config = TrainingConfig(
+            root_dir=Path(training.root_dir),
+            trained_model_path=Path(training.trained_model_path),
+            updated_base_model_path=Path(
+                prepare_base_model.updated_base_model_path
+            ),
+            training_data=Path(training_data),
+            params_epochs=params.EPOCHS,
+            params_batch_size=params.BATCH_SIZE,
+            params_is_augmentation=params.AUGMENTATION,
+            params_image_size=params.IMAGE_SIZE,
+        )
+
+        return training_config
