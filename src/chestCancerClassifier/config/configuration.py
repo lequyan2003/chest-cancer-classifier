@@ -4,6 +4,7 @@ from pathlib import Path
 
 from chestCancerClassifier.constants import CONFIG_FILE_PATH, PARAMS_FILE_PATH
 from chestCancerClassifier.entity.config_entity import (DataIngestionConfig,
+                                                        EvaluationConfig,
                                                         PrepareBaseModelConfig,
                                                         TrainingConfig)
 from chestCancerClassifier.utils.common import create_directories, read_yaml
@@ -120,3 +121,18 @@ class ConfigurationManager:
         )
 
         return training_config
+
+    def get_evaluation_config(self) -> EvaluationConfig:
+        eval_config = EvaluationConfig(
+            path_of_model="artifacts/training/model.h5",
+            training_data="artifacts/data_ingestion/Data/new",
+            mlflow_uri=(
+                "https://dagshub.com/lequyan2003/"
+                "chest-cancer-classifier.mlflow"
+            ),
+            all_params=self.params,
+            params_image_size=self.params.IMAGE_SIZE,
+            params_batch_size=self.params.BATCH_SIZE
+        )
+
+        return eval_config
