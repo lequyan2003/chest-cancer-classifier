@@ -1,3 +1,5 @@
+import os
+
 from chestCancerClassifier import logger
 from chestCancerClassifier.components.model_evaluation_with_mlflow import \
     Evaluation
@@ -15,10 +17,12 @@ class EvaluationPipeline:
         eval_config = config.get_evaluation_config()
         evaluation = Evaluation(eval_config)
         evaluation.evaluation()
-        evaluation.log_into_mlflow()
+        # evaluation.log_into_mlflow()
 
 
 if __name__ == "__main__":
+    os.environ["repo_owner"] = "lequyan2003"
+    os.environ["repo_name"] = "chest-cancer-classifier"
     try:
         logger.info(f">>>>>>> stage {STAGE_NAME} started <<<<<<<")
         obj = EvaluationPipeline()
