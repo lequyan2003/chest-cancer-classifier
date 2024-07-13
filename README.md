@@ -46,7 +46,6 @@ with mlflow.start_run():
   mlflow.log_metric('metric name', 1)
 
 ```
-<<<<<<< HEAD
 
 
 ### DVC cmd
@@ -155,5 +154,9 @@ DVC
     AWS_ECR_LOGIN_URI = demo>>  891377084283.dkr.ecr.us-east-2.amazonaws.com
 
     ECR_REPOSITORY_NAME = chesty
-=======
->>>>>>> d2259b80d8a83ef6c1727b9ecb2ec0ce065b5d2a
+
+# 8. Connect
+
+  Security>Security groups>Edit inbound rules>Add rule>Port range: 8080>0.0.0.0/0
+
+  http://Public IPv4 address:8080

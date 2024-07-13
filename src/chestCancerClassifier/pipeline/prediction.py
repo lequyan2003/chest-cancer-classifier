@@ -11,13 +11,8 @@ class PredictionPipeline:
 
     def predict(self):
         # load model
-<<<<<<< HEAD
         # model = load_model(os.path.join("artifacts", "training", "model.h5"))
         model = load_model(os.path.join("model", "model.h5"))
-=======
-        model = load_model(os.path.join("artifacts", "training", "model.h5"))
-        # model = load_model(os.path.join("model", "model.h5"))
->>>>>>> d2259b80d8a83ef6c1727b9ecb2ec0ce065b5d2a
 
         imagename = self.filename
         test_image = image.load_img(imagename, target_size=(224, 224))
@@ -28,7 +23,7 @@ class PredictionPipeline:
 
         if result[0] == 1:
             prediction = 'Normal'
-            return [{"image": prediction}]
         else:
             prediction = 'Adenocarcinoma Cancer'
-            return [{"image": prediction}]
+
+        return [{"image": prediction}]
