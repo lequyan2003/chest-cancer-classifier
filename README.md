@@ -29,7 +29,7 @@ Run this to export as env variables: (`set` is used for Windows machines. For Li
 
 set repo_owner=lequyan2003
 
-set repo_name=chest-cancer-classifier 
+set repo_name=chest-cancer-classifier
 
 ```
 
@@ -109,7 +109,7 @@ DVC
 
 	2. Access keys > Create access key > CLI
 
-  3. Download .csv file
+    3. Download .csv file
 	
 ## 3. Create ECR repo to store/save docker image
     - Save the URI: 891377084283.dkr.ecr.us-east-2.amazonaws.com/chesty
@@ -119,8 +119,7 @@ DVC
 
 ## 5. Open EC2 and Install docker in EC2 Machine:
 	
-	
-	#optinal
+	#optimal
 
 	sudo apt-get update -y
 
@@ -137,8 +136,8 @@ DVC
 	newgrp docker
 	
 # 6. Configure EC2 as self-hosted runner:
-  Settings>Actions>Runners>New self-hosted runner>Choose os Linux>Then run commands one by one
-  (Enter the name of runner: self-hosted)
+    Settings>Actions>Runners>New self-hosted runner>Choose os Linux>Then run commands one by one
+    (Enter the name of runner: self-hosted)
 
 
 # 7. Setup github secrets:
